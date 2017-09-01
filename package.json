@@ -1,0 +1,53 @@
+{
+  "name": "cardtree",
+  "version": "0.0.1",
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0",
+      "react"
+    ],
+    "plugins": [
+      [
+        "babel-plugin-root-import",
+        {
+          "rootPathSuffix": "src/js"
+        }
+      ]
+    ]
+  },
+  "scripts": {
+    "p": "webpack --profile  --progress --config ./webpack.config.production.js --display-optimization-bailout",
+    "dev": "webpack --colors",
+    "w": "webpack-dev-server --inline --port 8089 --hot --config ./webpack.config.dev.js"
+  },
+  "dependencies": {
+    "bootstrap": "3.3.7",
+    "font-awesome": "^4.7.0",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "autoprefixer-loader": "^3.2.0",
+    "babel": "^6.23.0",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-import": "^1.2.1",
+    "babel-plugin-root-import": "^5.1.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "classnames": "^2.2.3",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
+    "jsx-loader": "^0.13.2",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
+    "react-hot-loader": "^1.3.1",
+    "style-loader": "^0.18.2",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.3.0",
+    "webpack-dev-server": "^2.5.1"
+  }
+}
