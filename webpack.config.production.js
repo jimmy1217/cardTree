@@ -1,9 +1,8 @@
 //webpack core
 var webpack = require("webpack");
 //webpack css 單獨打包 plugin
-
 var config = require('./webpack.config');
-
+var CompressionPlugin = require('compression-webpack-plugin');
 //設置node_env = production
 config.plugins.push(
     new webpack.DefinePlugin({
@@ -29,5 +28,14 @@ config.plugins.push(
         join_vars: true,    // join var declarations
         if_return: true     // optimize if-s followed by return/continue
     }
+}));
+
+//做預先壓縮 , 透過nginx gzip_static 來抓gz
+config.plugins.push(new CompressionPlugin({
+    asset: "[path].gz[query]",
+    algorithm: "gzip",
+    test: /\.js$|\.css$|\.html$/,
+    threshold: 10240,
+    minRatio: 0.8
 }));
 module.exports = config;

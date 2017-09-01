@@ -9,7 +9,7 @@ module.exports = {
     // 輸入各個頁面的js
     entry: {
         // 共用vendor js
-        vendor: [Path.resolve(__dirname, "./src/js/vendor.js")],
+        vendor: ['react','react-dom','classnames'],
         // 有使用redux 的部份皆在app.js
         app: [Path.resolve(__dirname, "./src/js/app.js")]
     },
@@ -22,33 +22,24 @@ module.exports = {
         sourceMapFilename: "[name].bundle.js.map",
         chunkFilename: '[name].[chunkhash:5].chunk.js'
     },
-    // debug: true,
-    // devtool: 'eval',
     module: {
         loaders: [{
             test: /\.css$/,
-            // loader: ExtractTextPlugin.extract('style-loader?insertAt=top&-singleton', ['css-loader?minimize?sourceMap!autoprefixer?browsers=last 2 version!'])
-
-            use: ExtractTextPlugin.extract({
-                fallback: 'style-loader?insertAt=top&-singleton',
-                //resolve-url-loader may be chained before sass-loader if necessary
-                use: [{
-                    loader: "css-loader?minimize?sourceMap!autoprefixer-loader?browsers=last 2 version!" // translates CSS into CommonJS
-                }]
-            })
+            use: [{
+                loader: "style-loader?insertAt=top&-singleton"
+            }, {
+                loader: "css-loader?minimize?sourceMap!autoprefixer-loader?browsers=last 2 version!" // translates CSS into CommonJS
+            }]
         }, {
             // requrie less需編譯成css
             test: /\.less$/,
-            // loader: ExtractTextPlugin.extract('style-loader?insertAt=top&-singleton', ['css-loader?minimize?sourceMap!autoprefixer?browsers=last 2 version!', 'less-loader?sourceMap'])
-            use: ExtractTextPlugin.extract({
-                fallback: 'style-loader?insertAt=top&-singleton',
-                //resolve-url-loader may be chained before sass-loader if necessary
-                use: [{
-                    loader: "css-loader?minimize?sourceMap!autoprefixer-loader?browsers=last 2 version!" // translates CSS into CommonJS
-                }, {
-                    loader: "less-loader?sourceMap" // compiles Less to CSS
-                }]
-            })
+            use: [{
+                loader: "style-loader?insertAt=top&-singleton"
+            }, {
+                loader: "css-loader?minimize?sourceMap!autoprefixer-loader?browsers=last 2 version!" // translates CSS into CommonJS
+            }, {
+                loader: "less-loader?sourceMap" // compiles Less to CSS
+            }]
         }, {
             test: /\.png$/,
             loader: "url-loader?limit=100000"
@@ -76,7 +67,6 @@ module.exports = {
 
         }]
     },
-
     externals: {
         // 對應外部jquery
         // "jQuery": "jQuery",
@@ -89,15 +79,7 @@ module.exports = {
         new webpack.ProvidePlugin({
             "React": "react",
             "ReactDOM": "react-dom",
-            "axios": "axios",
             "classNames": "classnames",
-            // redux共用 action
-            "mainAction": Path.resolve(__dirname, "./src/js/action/mainActions"),
-            // 所有containers
-            "mainContainer": Path.resolve(__dirname, "./src/js/containers/index"),
-            // 所有components
-            "mainComponent": Path.resolve(__dirname, "./src/js/components/index"),
-            "AppHelpers": Path.resolve(__dirname, "./src/js/helpers/app-helpers")
         }),
         // moment.js ignore locale.js , 不然打包會打包各語言檔
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|fr|hu/),
