@@ -3,6 +3,7 @@ var webpack = require("webpack");
 //webpack css 單獨打包 plugin
 var config = require('./webpack.config');
 var CompressionPlugin = require('compression-webpack-plugin');
+config.output.publicPath = "public/";
 //設置node_env = production
 config.plugins.push(
     new webpack.DefinePlugin({
