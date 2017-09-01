@@ -2,9 +2,6 @@
 var Path = require("path");
 //webpack core
 var webpack = require("webpack");
-//webpack css 單獨打包 plugin
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-
 module.exports = {
     // 輸入各個頁面的js
     entry: {
@@ -85,8 +82,6 @@ module.exports = {
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|fr|hu/),
         // 這會移除所有js裡面的 vendor code
         new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.js" }),
-        // css 抽離plugin
-        new ExtractTextPlugin("./../public/[name].css")
     ],
     resolve: {
         // // require 檔案時的根目錄
