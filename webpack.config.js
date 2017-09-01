@@ -46,16 +46,16 @@ module.exports = {
         },
         {
             test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=application/font-woff'
+            loader: 'url-loader?limit=10000&mimetype=application/font-woff'
         }, {
             test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=application/octet-stream'
+            loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
         }, {
             test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'file'
+            loader: 'file-loader'
         }, {
             test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=image/svg+xml'
+            loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
         },
         {
             test: /\.js$/,
@@ -77,6 +77,7 @@ module.exports = {
             "React": "react",
             "ReactDOM": "react-dom",
             "classNames": "classnames",
+            "ReactCSSTransitionGroup": "react-addons-css-transition-group",
         }),
         // moment.js ignore locale.js , 不然打包會打包各語言檔
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|fr|hu/),
