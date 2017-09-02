@@ -97,7 +97,7 @@ class CardTree extends Component {
                         {
                             roomTypeList.map((roomtype, k) => {
                                 return <div key={roomtype._id} className="col-xs-12 col-sm-6 mb-20" onClick={(e) => this.handleChange('roomType_id', roomtype._id, k, 2, e)}>
-                                    <div className={classNames("cardBlock")}><span className="blockTitle">{roomtype.name}</span>
+                                    <div className={classNames("cardBlock")}>{roomtype.name}
                                         <div ref={"block" + k} className={"custom-image bg-img bg-img" + k % 4} />
                                         <span ref={"ripple" + k} className={classNames("ripple", { show: this.state.active_index === k })}></span>
                                     </div>
