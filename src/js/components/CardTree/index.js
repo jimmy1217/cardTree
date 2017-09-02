@@ -1,8 +1,25 @@
 import React, { Component } from 'react';
 import QueueAnim from 'rc-queue-anim';
 import fakeData from './fakeData';
+import ImageBlock from '~/pureComponents/ImageBlock';
 const roomTypeList = fakeData;
 require('./cardtree.less');
+const deviceArr = [{
+    icon: 'fa fa-cloud',
+    name: '煙霧感應器'
+}, {
+    icon: 'fa fa-lightbulb-o',
+    name: '亮度感應器'
+}, {
+    icon: 'fa fa-microchip',
+    name: '門窗感應器'
+}, {
+    icon: 'fa fa-microchip',
+    name: '移動感應器'
+}, {
+    icon: 'fa fa-lightbulb-o',
+    name: '電燈'
+}];
 
 class CardTree extends Component {
     constructor(props) {
@@ -12,10 +29,6 @@ class CardTree extends Component {
         };
         this.state = this.returnDefaultState();
     }
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state !== nextState;
-    }
-
     returnDefaultState = () => {
         return ({
             roomType_id: null,
@@ -29,51 +42,48 @@ class CardTree extends Component {
             active_index: null
         });
     }
-
-    handleChange = (key, value, index, step, e) => {
-        //ripple 定位
-        const target = this.refs['block' + index];
+    rippleClick = (target, ripple, index, e, newState) => {
+        //處理ripple 定位
         const rect = target.getBoundingClientRect();
-        const ripple = this.refs['ripple' + index];
         ripple.style.height = ripple.style.width = Math.max(rect.width, rect.height) + 'px'; // 設定完範圍後才抓offset 才不會計算錯誤
         const top = e.pageY - rect.top - ripple.offsetHeight / 2 - document.body.scrollTop;
         const left = e.pageX - rect.left - ripple.offsetWidth / 2 - document.body.scrollLeft;
         ripple.style.top = top + 'px';
         ripple.style.left = left + 'px';
-        //ripple -- end
 
-        if (key) {
-            var newState = Object.assign({}, this.state);
-            newState[key] = value;
-            var pushName = null;
-            if (key === 'roomType_id') {
-                newState.roomType_index = index;
-                newState.roomType_name = roomTypeList[index].name;
-                pushName = newState.roomType_name;
-            } else if (key === 'room_id') {
-                newState.room_index = index;
-                newState.room_name = roomTypeList[this.state.roomType_index].rooms[index].no;
-                pushName = newState.room_name;
-            }
-
-            //處理麵包屑
-            newState.step = step;
-            var breadcrumb = this.state.breadcrumb.slice(0);
-            breadcrumb.push(pushName);
-            newState.breadcrumb = breadcrumb;
-            newState.active_index = null;
-            this.stepStatus[step] = newState;
-        }
-
-        //處理麵包屑 end
         this.setState({
             active_index: index
         }, () => {
             setTimeout(() => {
-                this.setState(key ? newState : { active_index: null });
+                this.setState(newState ? newState : { active_index: null });
             }, 300)
         });
     }
+
+    handleChange = (key, value, index, step, target, ripple, e) => {
+        var newState = Object.assign({}, this.state);
+        newState[key] = value;
+        var pushName = null;
+        if (key === 'roomType_id') {
+            newState.roomType_index = index;
+            newState.roomType_name = roomTypeList[index].name;
+            pushName = newState.roomType_name;
+        } else if (key === 'room_id') {
+            newState.room_index = index;
+            newState.room_name = roomTypeList[this.state.roomType_index].rooms[index].no;
+            pushName = newState.room_name;
+        }
+
+        //處理麵包屑
+        newState.step = step;
+        var breadcrumb = this.state.breadcrumb.slice(0);
+        breadcrumb.push(pushName);
+        newState.breadcrumb = breadcrumb;
+        newState.active_index = null;
+        this.stepStatus[step] = newState;
+        this.rippleClick(target, ripple, index, e, newState);
+    }
+    
     changeStep = (e, index) => {
         if (e) { e.preventDefault(); }
         this.setState(this.stepStatus[index]);
@@ -99,33 +109,31 @@ class CardTree extends Component {
                 {this.state.step === 1
                     ? <div className="row">
                         <QueueAnim className="queue-simple">
-                            {
-                                roomTypeList.map((roomtype, k) => {
-                                    return <div key={roomtype._id + k} className="col-xs-12 col-sm-6 mb-20" onClick={(e) => this.handleChange('roomType_id', roomtype._id, k, 2, e)}>
-                                        <div className="cardBlock">{roomtype.name}
-                                            <div ref={"block" + k} className={"custom-image bg-img bg-img" + k % 4} />
-                                            <span ref={"ripple" + k} className={classNames("ripple", { show: this.state.active_index === k })}></span>
-                                        </div>
-                                    </div>
-                                })
-                            }
+                            {roomTypeList.map((roomtype, k) =>
+                                <ImageBlock
+                                    key={roomtype._id + k}
+                                    index={k}
+                                    title={roomtype.name}
+                                    visible={this.state.active_index === k}
+                                    onClick={(target, ripple, index, e) => this.handleChange('roomType_id', roomtype._id, k, 2, target, ripple, e)}
+                                />)}
                         </QueueAnim>
                     </div>
-
                     : null}
 
                 {this.state.step === 2
                     ? <div className={"row"}>
                         <QueueAnim className="queue-simple">
                             {roomTypeList[this.state.roomType_index].rooms.length
-                                ? roomTypeList[this.state.roomType_index].rooms.map((rooms, k) => {
-                                    return <div key={rooms._id} className="col-xs-12 col-sm-6 mb-20" onClick={(e) => this.handleChange('room_id', rooms._id, k, 3, e)}>
-                                        <div className="cardBlock">{rooms.no}
-                                            <div ref={"block" + k} className={"custom-image bg-img bg-img" + k % 4} />
-                                            <span ref={"ripple" + k} className={classNames("ripple", { show: this.state.active_index === k })}></span>
-                                        </div>
-                                    </div>
-                                }) : <div className="col-xs-12"><p>尚未新增任何房間</p></div>}
+                                ? roomTypeList[this.state.roomType_index].rooms.map((rooms, k) =>
+                                    <ImageBlock
+                                        key={rooms._id}
+                                        index={k}
+                                        title={rooms.no}
+                                        visible={this.state.active_index === k}
+                                        onClick={(target, ripple, index, e) => this.handleChange('room_id', rooms._id, k, 3, target, ripple, e)}
+                                    />
+                                ) : <div className="col-xs-12"><p>尚未新增任何房間</p></div>}
                         </QueueAnim>
                     </div>
                     : null}
@@ -133,36 +141,16 @@ class CardTree extends Component {
                 {this.state.step === 3
                     ? <div className="row">
                         <QueueAnim className="queue-simple">
-                            <div key="1" className="col-xs-12 col-sm-6 mb-20">
-                                <div className="cardBlock"><i className="fa fa-cloud"></i> 煙霧感應器
-                                    <div className={"custom-image bg-img bg-img1 disabled"} />
-                                </div>
-                            </div>
-                            <div key="2" className="col-xs-12 col-sm-6 mb-20">
-                                <div className="cardBlock"> <i className="fa fa-thermometer-full"></i> 溫度感應器
-                                    <div className={"custom-image bg-img bg-img2 disabled"} />
-                                </div>
-                            </div>
-                            <div key="3" className="col-xs-12 col-sm-6 mb-20">
-                                <div className="cardBlock"><i className="fa fa-lightbulb-o"></i> 亮度感應器
-                                    <div className={"custom-image bg-img bg-img0 disabled"} />
-                                </div>
-                            </div>
-                            <div key="4" className="col-xs-12 col-sm-6 mb-20">
-                                <div className="cardBlock"><i className="fa fa-microchip"></i> 門窗感應器
-                                    <div className={"custom-image bg-img bg-img3 disabled"} />
-                                </div>
-                            </div>
-                            <div key="5" className="col-xs-12 col-sm-6 mb-20">
-                                <div className="cardBlock"><i className="fa fa-microchip"></i> 移動感應器
-                                    <div className={"custom-image bg-img bg-img3 disabled"} />
-                                </div>
-                            </div>
-                            <div key="6" className="col-xs-12 col-sm-6 mb-20">
-                                <div className="cardBlock"><i className="fa fa-lightbulb-o"></i> 電燈
-                                <div className={"custom-image bg-img bg-img3 disabled"} />
-                                </div>
-                            </div>
+                            {deviceArr.map((device, k) =>
+                                <ImageBlock
+                                    key={'device' + k}
+                                    index={k}
+                                    iconClass={device.icon}
+                                    disabled={true}
+                                    title={device.name}
+                                    visible={this.state.active_index === k}
+                                    onClick={this.rippleClick}
+                                />)}
                         </QueueAnim>
                     </div>
                     : null}
