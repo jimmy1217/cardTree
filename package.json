@@ -22,6 +22,7 @@
     "w": "webpack-dev-server --inline --port 8089 --hot --config ./webpack.config.dev.js"
   },
   "dependencies": {
+    "rc-queue-anim": "^1.2.2",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",
     "react-dom": "^15.6.1"

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import QueueAnim from 'rc-queue-anim';
 import fakeData from './fakeData';
 const roomTypeList = fakeData;
 require('./cardtree.less');
@@ -94,65 +95,72 @@ class CardTree extends Component {
                 </div>
                 {this.state.step === 1
                     ? <div className="row">
-                        {
-                            roomTypeList.map((roomtype, k) => {
-                                return <div key={roomtype._id} className="col-xs-12 col-sm-6 mb-20" onClick={(e) => this.handleChange('roomType_id', roomtype._id, k, 2, e)}>
-                                    <div className={classNames("cardBlock")}>{roomtype.name}
-                                        <div ref={"block" + k} className={"custom-image bg-img bg-img" + k % 4} />
-                                        <span ref={"ripple" + k} className={classNames("ripple", { show: this.state.active_index === k })}></span>
+                        <QueueAnim className="queue-simple">
+                            {
+                                roomTypeList.map((roomtype, k) => {
+                                    return <div key={roomtype._id + k} className="col-xs-12 col-sm-6 mb-20" onClick={(e) => this.handleChange('roomType_id', roomtype._id, k, 2, e)}>
+                                        <div className="cardBlock">{roomtype.name}
+                                            <div ref={"block" + k} className={"custom-image bg-img bg-img" + k % 4} />
+                                            <span ref={"ripple" + k} className={classNames("ripple", { show: this.state.active_index === k })}></span>
+                                        </div>
                                     </div>
-                                </div>
-                            })
-                        }
+                                })
+                            }
+                        </QueueAnim>
                     </div>
+
                     : null}
 
                 {this.state.step === 2
                     ? <div className={"row"}>
-                        {roomTypeList[this.state.roomType_index].rooms.length
-                            ? roomTypeList[this.state.roomType_index].rooms.map((rooms, k) => {
-                                return <div key={rooms._id} className="col-xs-12 col-sm-6 mb-20" onClick={(e) => this.handleChange('room_id', rooms._id, k, 3, e)}>
-                                    <div className="cardBlock">{rooms.no}
-                                        <div ref={"block" + k} className={"custom-image bg-img bg-img" + k % 4} />
-                                        <span ref={"ripple" + k} className={classNames("ripple", { show: this.state.active_index === k })}></span>
+                        <QueueAnim className="queue-simple">
+                            {roomTypeList[this.state.roomType_index].rooms.length
+                                ? roomTypeList[this.state.roomType_index].rooms.map((rooms, k) => {
+                                    return <div key={rooms._id} className="col-xs-12 col-sm-6 mb-20" onClick={(e) => this.handleChange('room_id', rooms._id, k, 3, e)}>
+                                        <div className="cardBlock">{rooms.no}
+                                            <div ref={"block" + k} className={"custom-image bg-img bg-img" + k % 4} />
+                                            <span ref={"ripple" + k} className={classNames("ripple", { show: this.state.active_index === k })}></span>
+                                        </div>
                                     </div>
-                                </div>
-                            }) : <div className="col-xs-12"><p>尚未新增任何房間</p></div>}
+                                }) : <div className="col-xs-12"><p>尚未新增任何房間</p></div>}
+                        </QueueAnim>
                     </div>
                     : null}
 
                 {this.state.step === 3
                     ? <div className="row">
-                        <div className="col-xs-12 col-sm-6 mb-20">
-                            <div className="cardBlock"><i className="fa fa-cloud"></i> 煙霧感應器
+                        <QueueAnim className="queue-simple">
+                            <div key="1" className="col-xs-12 col-sm-6 mb-20">
+                                <div className="cardBlock"><i className="fa fa-cloud"></i> 煙霧感應器
                                     <div className={"custom-image bg-img bg-img1 disabled"} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-xs-12 col-sm-6 mb-20">
-                            <div className="cardBlock"> <i className="fa fa-thermometer-full"></i> 溫度感應器
+                            <div key="2" className="col-xs-12 col-sm-6 mb-20">
+                                <div className="cardBlock"> <i className="fa fa-thermometer-full"></i> 溫度感應器
                                     <div className={"custom-image bg-img bg-img2 disabled"} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-xs-12 col-sm-6 mb-20">
-                            <div className="cardBlock"><i className="fa fa-lightbulb-o"></i> 亮度感應器
+                            <div key="3" className="col-xs-12 col-sm-6 mb-20">
+                                <div className="cardBlock"><i className="fa fa-lightbulb-o"></i> 亮度感應器
                                     <div className={"custom-image bg-img bg-img0 disabled"} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-xs-12 col-sm-6 mb-20">
-                            <div className="cardBlock"><i className="fa fa-microchip"></i> 門窗感應器
+                            <div key="4" className="col-xs-12 col-sm-6 mb-20">
+                                <div className="cardBlock"><i className="fa fa-microchip"></i> 門窗感應器
                                     <div className={"custom-image bg-img bg-img3 disabled"} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-xs-12 col-sm-6 mb-20">
-                            <div className="cardBlock"><i className="fa fa-microchip"></i> 移動感應器
+                            <div key="5" className="col-xs-12 col-sm-6 mb-20">
+                                <div className="cardBlock"><i className="fa fa-microchip"></i> 移動感應器
                                     <div className={"custom-image bg-img bg-img3 disabled"} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-xs-12 col-sm-6 mb-20">
-                            <div className="cardBlock"><i className="fa fa-lightbulb-o"></i> 電燈
+                            <div key="6" className="col-xs-12 col-sm-6 mb-20">
+                                <div className="cardBlock"><i className="fa fa-lightbulb-o"></i> 電燈
                                 <div className={"custom-image bg-img bg-img3 disabled"} />
+                                </div>
                             </div>
-                        </div>
+                        </QueueAnim>
                     </div>
                     : null}
             </div>
