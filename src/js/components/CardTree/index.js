@@ -42,32 +42,35 @@ class CardTree extends Component {
         ripple.style.left = left + 'px';
         //ripple -- end
 
-        var newState = Object.assign({}, this.state);
-        newState[key] = value;
-        var pushName = null;
-        if (key === 'roomType_id') {
-            newState.roomType_index = index;
-            newState.roomType_name = roomTypeList[index].name;
-            pushName = newState.roomType_name;
-        } else if (key === 'room_id') {
-            newState.room_index = index;
-            newState.room_name = roomTypeList[this.state.roomType_index].rooms[index].no;
-            pushName = newState.room_name;
+        if (key) {
+            var newState = Object.assign({}, this.state);
+            newState[key] = value;
+            var pushName = null;
+            if (key === 'roomType_id') {
+                newState.roomType_index = index;
+                newState.roomType_name = roomTypeList[index].name;
+                pushName = newState.roomType_name;
+            } else if (key === 'room_id') {
+                newState.room_index = index;
+                newState.room_name = roomTypeList[this.state.roomType_index].rooms[index].no;
+                pushName = newState.room_name;
+            }
+
+            //處理麵包屑
+            newState.step = step;
+            var breadcrumb = this.state.breadcrumb.slice(0);
+            breadcrumb.push(pushName);
+            newState.breadcrumb = breadcrumb;
+            newState.active_index = null;
+            this.stepStatus[step] = newState;
         }
 
-        //處理麵包屑
-        newState.step = step;
-        var breadcrumb = this.state.breadcrumb.slice(0);
-        breadcrumb.push(pushName);
-        newState.breadcrumb = breadcrumb;
-        newState.active_index = null;
-        this.stepStatus[step] = newState;
         //處理麵包屑 end
         this.setState({
             active_index: index
         }, () => {
             setTimeout(() => {
-                this.setState(newState);
+                this.setState(key ? newState : { active_index: null });
             }, 300)
         });
     }
