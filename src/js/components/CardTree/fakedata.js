@@ -1,6 +1,6 @@
 const fakeData = [
     {
-        "_id": "5qwe238ff70ac1e058b4735",
+        "_id": "5qwe238ff73ac1e058b4735",
         "name": "八人房",
         "rooms": [
             {
@@ -30,8 +30,8 @@ const fakeData = [
         ]
     },
     {
-        "_id": "574fe038ff70ac1e058b4735",
-        "name": "雙人房",
+        "_id": "574fe038ff73ac1e058b4735",
+        "name": "單人房",
         "rooms": [
             {
                 "_id": "574fe104ff70ac1b058b4722",
@@ -64,8 +64,8 @@ const fakeData = [
         ]
     },
     {
-        "_id": "574fe0b6ff70ac1f058b46f8",
-        "name": "\u56db\u4eba\u623f",
+        "_id": "574fe0b6ff70ac1f038b46f8",
+        "name": "雙人房",
         "rooms": [
             {
                 "_id": "574fe199ff70ac1c058b4749",
@@ -90,8 +90,8 @@ const fakeData = [
         ]
     },
     {
-        "_id": "574fe1dcff70ac1e058b4738",
-        "name": "\u516d\u4eba\u623f",
+        "_id": "574ge1dcff70ac1e058b3738",
+        "name": "三人房",
         "rooms": [
             {
                 "_id": "574fe1f1ff70acfa038b4687",
