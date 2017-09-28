@@ -45,11 +45,11 @@ class CardTree extends Component {
     rippleClick = (target, ripple, index, e, newState) => {
         //處理ripple 定位
         const rect = target.getBoundingClientRect();
-        const scrollY = window.scrollY; //document.body.scrollTop
-        const scrollX = window.scrollX; //document.body.scrollLeft
+        const scrollTop = document.documentElement.scrollTop + document.body.scrollTop;
+        const scrollLeft = document.documentElement.scrollLeft + document.body.scrollLeft;
         ripple.style.height = ripple.style.width = Math.max(rect.width, rect.height) + 'px'; // 設定完範圍後才抓offset 才不會計算錯誤
-        const top = e.pageY - rect.top - ripple.offsetHeight / 2 - scrollY;
-        const left = e.pageX - rect.left - ripple.offsetWidth / 2 - scrollX;
+        const top = e.pageY - rect.top - ripple.offsetHeight / 2 - scrollTop;
+        const left = e.pageX - rect.left - ripple.offsetWidth / 2 - scrollLeft;
         ripple.style.top = top + 'px';
         ripple.style.left = left + 'px';
 
